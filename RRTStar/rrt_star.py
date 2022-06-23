@@ -3,7 +3,7 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patch
-
+from obstacle_handler import Obstacle_Handler
 
 def main():
     """A debug script for the rrt star planner.
@@ -16,9 +16,15 @@ def main():
         'start': [140, 60],
         'end': [180, 60],
         'obstacles': [
-            [158, 58, 162, 62]
+            [158, 58, 162, 62],
+            [170,55,175,60]
         ],
     }  # paste output from debug log
+
+    # Create a Obstacle_handler object
+    obs_handler = Obstacle_Handler()
+    for obs in conds['obstacles']:
+        obs_handler.add_obstacle(obs)
 
     initial_conditions = {
         'start': np.array(conds['start']),
@@ -27,8 +33,8 @@ def main():
     }
 
     hyperparameters = {
-        "step_size": 1.0,
-        "max_iterations": 2000,
+        "step_size": 2.0,
+        "max_iterations": 8000,
         "end_dist_threshold": 1.0,
         "obstacle_clearance": 1.0,
         "lane_width": 4.0,
@@ -44,6 +50,11 @@ def main():
     for i in range(sim_loop):
         print("Iteration: {}".format(i))
         start_time = time.time()
+        
+        # Transform the obstacles
+        # Update the initial conditions
+
+
         result_x, result_y, success = \
             rrt_star_wrapper.apply_rrt_star(initial_conditions, hyperparameters)
         end_time = time.time() - start_time
