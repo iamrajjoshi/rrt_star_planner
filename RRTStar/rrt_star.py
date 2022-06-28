@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patch
 from obstacle_handler import Obstacle_Handler
+from obstacle_handler import Obstacle
 
 def main():
     """A debug script for the rrt star planner.
@@ -15,6 +16,7 @@ def main():
     conds = {
         'start': [140, 60],
         'end': [180, 60],
+        # obstacles initial position
         'obstacles': [
             [158, 58, 162, 62],
             [170,55,175,60]
@@ -22,9 +24,17 @@ def main():
     }  # paste output from debug log
 
     # Create a Obstacle_handler object
-    obs_handler = Obstacle_Handler()
-    for obs in conds['obstacles']:
-        obs_handler.add_obstacle(obs)
+    obs_handler = Obstacle_Handler(step_size=2.0)
+    obs1 = conds['obstacles'][0]
+    obs2 = conds['obstacles'][1]
+    
+    # Moves obstacle 2 units to the left every timestep for 10 timesteps, then moved 1 unit down for 10 timesteps
+    obs = Obstacle(obs1, is_dynamic=True, movement_list=[[-1,0], [0,-1]], step_list=[10, 10])  
+    obs_handler.add_obstacle(obs)
+    
+    # Moves obstacle 1 units to the down every timestep for 5 timesteps
+    obs = Obstacle(obs2, is_dynamic=True, movement_list=[[0,1]], step_list=[5])
+    obs_handler.add_obstacle(obs)
 
     initial_conditions = {
         'start': np.array(conds['start']),
@@ -50,11 +60,11 @@ def main():
     for i in range(sim_loop):
         print("Iteration: {}".format(i))
         start_time = time.time()
-        
-        # Transform the obstacles
+
         # Update the initial conditions
-
-
+        obs_handler.transform()
+        initial_conditions['obs'] = obs_handler.get_obstacles()
+        
         result_x, result_y, success = \
             rrt_star_wrapper.apply_rrt_star(initial_conditions, hyperparameters)
         end_time = time.time() - start_time
