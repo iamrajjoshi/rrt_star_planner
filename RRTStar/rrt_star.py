@@ -24,16 +24,16 @@ def main():
     }  # paste output from debug log
 
     # Create a Obstacle_handler object
-    obs_handler = Obstacle_Handler(step_size=2.0)
+    obs_handler = Obstacle_Handler(step_size=1.0)
     obs1 = conds['obstacles'][0]
     obs2 = conds['obstacles'][1]
     
     # Moves obstacle 2 units to the left every timestep for 10 timesteps, then moved 1 unit down for 10 timesteps
-    obs = Obstacle(obs1, is_dynamic=True, movement_list=[[-1,0], [0,-1]], step_list=[10, 10])  
+    obs = Obstacle(obs1, is_dynamic=True, movement_list=[[-0.5,0], [0,-1]], step_list=[10, 10])  
     obs_handler.add_obstacle(obs)
     
-    # Moves obstacle 1 units to the down every timestep for 5 timesteps
-    obs = Obstacle(obs2, is_dynamic=True, movement_list=[[0,1]], step_list=[5])
+    # Moves obstacle 1 units to the up every timestep for 10 timesteps, then moved 1 unit down for 10 timesteps
+    obs = Obstacle(obs2, is_dynamic=True, movement_list=[[0,1], [0,-1]], step_list=[10, 10])
     obs_handler.add_obstacle(obs)
 
     initial_conditions = {
@@ -43,7 +43,7 @@ def main():
     }
 
     hyperparameters = {
-        "step_size": 2.0,
+        "step_size": 1.0,
         "max_iterations": 8000,
         "end_dist_threshold": 1.0,
         "obstacle_clearance": 1.0,
