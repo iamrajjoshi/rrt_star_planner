@@ -27,9 +27,7 @@ class Obstacle:
         else:
             return self.coords
         
-
-
-class Obstacle_Handler:
+class ObstacleHandler:
     '''
     The obstacles are defined as follows:
     [lower left x, lower left y, upper right x, upper right y]
@@ -37,8 +35,6 @@ class Obstacle_Handler:
     
     Each dynamic obstacle has a list of movements and a list of time_steps. The list of movements is a list of [x, y] movements, 
     and the list of time_steps is a list time_steps where time_step[i] is how long the robot will perform the ith movement.
-
-    When returning the obstacles, need to convert to a list of lists.
     '''
     def __init__(self, step_size = 1.0) -> None:
         self.obstacles = []
@@ -53,7 +49,12 @@ class Obstacle_Handler:
     
     def get_obstacles(self):
         arr = []
+        dynamic = []
         for i in range(len(self.obstacles)):
             arr.append(self.obstacles[i].coords)
-        return np.array(arr)
+            if self.obstacles[i].is_dynamic:
+                dynamic.append(True)
+            else:
+                dynamic.append(False)
+        return np.array(arr), dynamic
             
