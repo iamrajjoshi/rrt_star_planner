@@ -117,8 +117,6 @@ def main():
             plt.ylabel("Y axis")
             plt.grid(True)
             plt.pause(0.1)
-            Path("img/frames").mkdir(parents=True, exist_ok=True)
-            plt.savefig("img/frames/{}.png".format(i))
 
     print("Finish")
     print("Average time per iteration: {}".format(total_time/i))
