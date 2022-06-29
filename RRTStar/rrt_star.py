@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patch
 from obstacle_handler import ObstacleHandler
 from obstacle_handler import Obstacle
-from pathlib import Path
 
 def main():
     """A debug script for the rrt star planner.
